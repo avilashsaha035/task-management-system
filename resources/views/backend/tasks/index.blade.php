@@ -41,6 +41,7 @@
                     <th class="text-center">Status</th>
                     <th class="text-center">Priority</th>
                     <th class="text-center">Due Date</th>
+                    <th class="text-center">Created By</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -86,6 +87,7 @@
                         <td class="text-center">
                             {{ $task->due_date ? $task->due_date->format('F d, Y') : '-' }}
                         </td>
+                        <td class="text-center">{{ $task->creator->name }}</td>
                         <td class="text-center">
                             <a href="{{ route('admin.tasks.edit', $task->id) }}" class="btn btn-sm btn-primary" title="Edit">
                                 <i class="fas fa-pen"></i>

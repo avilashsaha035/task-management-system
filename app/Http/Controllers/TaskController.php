@@ -38,6 +38,7 @@ class TaskController extends Controller
         $task->status      = $request->status;
         $task->priority    = $request->priority;
         $task->due_date    = $request->due_date;
+        $task->created_by  = auth()->id();
 
         $task->save();
 
