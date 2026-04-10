@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@stack('title') | {{ 'My Portfolio' }}</title>
+        <title>@stack('title') | {{ 'Task Management System' }}</title>
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="{{ asset('assets/backend/plugins/fontawesome-free/css/all.min.css') }}">
