@@ -4,6 +4,18 @@
     Tasks
 @endpush
 
+@push('css')
+    <style>
+        .task-desc.justify-text {
+            text-align: justify;
+            white-space: normal;
+        }
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="card card-info">
     <div class="card-header">
@@ -37,22 +49,40 @@
                     <tr>
                         <td class="text-center">{{ $key+1 }}</td>
                         <td class="text-center">{{ $task->title }}</td>
-                        <td class="text-center">{{ Str::limit($task->description, 50) }}</td>
                         <td class="text-center">
-                            <select class="form-control form-control-sm text-center task-status" data-id="{{ $task->id }}">
+                            @php
+                                $shortDesc = Str::limit($task->description, 50);
+                            @endphp
+
+                            <span class="task-desc d-inline-block text-truncate" data-full="{{ $task->description }}">{{ $shortDesc }}</span>
+
+                            @if(strlen($task->description) > 50)
+                                <a href="javascript:void(0);" class="show-toggle text-primary ms-2">Show More</a>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <select class="form-control form-control-sm task-status text-center cursor-pointer
+                                @if($task->status == 'pending') bg-secondary text-white
+                                @elseif($task->status == 'in_progress') bg-info text-white
+                                @else bg-success text-white @endif"
+                                data-id="{{ $task->id }}">
                                 <option value="pending" {{ $task->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="in_progress" {{ $task->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="completed" {{ $task->status == 'completed' ? 'selected' : '' }}>Completed</option>
                             </select>
                         </td>
+
                         <td class="text-center">
-                            <select class="form-control form-control-sm text-center task-priority" data-id="{{ $task->id }}">
+                            <select class="form-control form-control-sm task-priority text-center cursor-pointer
+                                @if($task->priority == 'low') bg-success text-white
+                                @elseif($task->priority == 'medium') bg-warning text-dark
+                                @else bg-danger text-white @endif"
+                                data-id="{{ $task->id }}">
                                 <option value="low" {{ $task->priority == 'low' ? 'selected' : '' }}>Low</option>
                                 <option value="medium" {{ $task->priority == 'medium' ? 'selected' : '' }}>Medium</option>
                                 <option value="high" {{ $task->priority == 'high' ? 'selected' : '' }}>High</option>
                             </select>
                         </td>
-
                         <td class="text-center">
                             {{ $task->due_date ? $task->due_date->format('F d, Y') : '-' }}
                         </td>
@@ -115,11 +145,11 @@
 
             // Update status via AJAX
             $(document).on('change', '.task-status', function () {
-                let taskId = $(this).data('id');
-                let status = $(this).val();
+                let select = $(this);
+                let taskId = select.data('id');
+                let status = select.val();
 
-                let url = "{{ route('admin.tasks.update.status', ':id') }}";
-                url = url.replace(':id', taskId);
+                let url = "{{ route('admin.tasks.update.status', ':id') }}".replace(':id', taskId);
 
                 $.ajax({
                     url: url,
@@ -129,6 +159,16 @@
                         status: status
                     },
                     success: function () {
+                        // Reset classes
+                        select.removeClass('bg-secondary bg-info bg-success text-white');
+                        if (status === 'pending') {
+                            select.addClass('bg-secondary text-white');
+                        } else if (status === 'in_progress') {
+                            select.addClass('bg-info text-white');
+                        } else {
+                            select.addClass('bg-success text-white');
+                        }
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Updated!',
@@ -136,24 +176,17 @@
                             timer: 2000,
                             showConfirmButton: false
                         });
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed!',
-                            text: 'Could not update status. Please try again.'
-                        });
                     }
                 });
             });
 
             // Update priority via AJAX
             $(document).on('change', '.task-priority', function () {
-                let taskId = $(this).data('id');
-                let priority = $(this).val();
+                let select = $(this);
+                let taskId = select.data('id');
+                let priority = select.val();
 
-                let url = "{{ route('admin.tasks.update.priority', ':id') }}";
-                url = url.replace(':id', taskId);
+                let url = "{{ route('admin.tasks.update.priority', ':id') }}".replace(':id', taskId);
 
                 $.ajax({
                     url: url,
@@ -163,6 +196,16 @@
                         priority: priority
                     },
                     success: function () {
+                        // Reset classes
+                        select.removeClass('bg-success bg-warning bg-danger text-white text-dark');
+                        if (priority === 'low') {
+                            select.addClass('bg-success text-white');
+                        } else if (priority === 'medium') {
+                            select.addClass('bg-warning text-dark');
+                        } else {
+                            select.addClass('bg-danger text-white');
+                        }
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Updated!',
@@ -170,15 +213,24 @@
                             timer: 2000,
                             showConfirmButton: false
                         });
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed!',
-                            text: 'Could not update priority. Please try again.'
-                        });
                     }
                 });
+            });
+
+            // Show More / Show Less toggle
+            $(document).on('click', '.show-toggle', function () {
+                let link = $(this);
+                let span = link.prev('.task-desc');
+                let fullText = span.data('full');
+                let shortText = fullText.length > 50 ? fullText.substring(0, 50) + '...' : fullText;
+
+                if (link.text() === 'Show More') {
+                    span.text(fullText).addClass('justify-text');
+                    link.text('Show Less');
+                } else {
+                    span.text(shortText).removeClass('justify-text');
+                    link.text('Show More');
+                }
             });
         });
     </script>
