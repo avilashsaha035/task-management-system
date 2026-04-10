@@ -1,6 +1,3 @@
-Here’s a complete **README.md** file you can copy directly into your project root. Once you paste it into GitHub, it will render properly like other projects:
-
-```markdown
 # Task Management System
 
 A Laravel-based task management system that allows users to create, update, delete, and track tasks with clear status and priority indicators. Designed for reliability, simplicity, and extensibility.
@@ -11,7 +8,7 @@ A Laravel-based task management system that allows users to create, update, dele
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-repo/task-management-system.git
+   git clone https://github.com/avilashsaha035/task-management-system
    cd task-management-system
    ```
 
@@ -78,10 +75,6 @@ A Laravel-based task management system that allows users to create, update, dele
   - Factories generate realistic test data.
   - Assertions check both HTTP responses and database state.
 
-Run all tests:
-```bash
-php artisan test
-```
 
 Run only task tests:
 ```bash
@@ -97,7 +90,3 @@ php artisan test --filter=TaskTest
 ```
 
 ---
-
-This file is ready to paste into your repo as `README.md`. It will render with headings, code blocks, and sections exactly like other GitHub projects.  
-
-Would you like me to also add a **“Future Improvements” section** at the bottom so your README shows a roadmap for upcoming features?
