@@ -32,6 +32,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
             'update'  => 'admin.tasks.update',
             'destroy' => 'admin.tasks.destroy',
         ]);
+    Route::put('/tasks/{id}/update-status', [TaskController::class, 'updateStatus'])->name('admin.tasks.update.status');
+    Route::put('/tasks/{id}/update-priority', [TaskController::class, 'updatePriority'])->name('admin.tasks.update.priority');
+
 });
 
 

@@ -69,6 +69,25 @@ class TaskController extends Controller
         //
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->status = $request->status;
+        $task->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updatePriority(Request $request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->priority = $request->priority;
+        $task->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */
