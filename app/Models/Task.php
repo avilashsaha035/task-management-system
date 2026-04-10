@@ -20,4 +20,9 @@ class Task extends Model
     protected $casts = [
         'due_date' => 'date',
     ];
+
+    public function getIsOverdueAttribute(): bool
+    {
+        return $this->status !== 'completed' && $this->due_date !== null && $this->due_date->isPast();
+    }
 }

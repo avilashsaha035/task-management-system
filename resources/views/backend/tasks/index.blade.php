@@ -48,8 +48,8 @@
                 @foreach($tasks as $key => $task)
                     <tr>
                         <td class="text-center">{{ $key+1 }}</td>
-                        <td class="text-center">{{ $task->title }}</td>
-                        <td class="text-center">
+                        <td class="">{{ $task->title }}</td>
+                        <td class="">
                             @php
                                 $shortDesc = Str::limit($task->description, 50);
                             @endphp
