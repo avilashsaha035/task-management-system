@@ -20,7 +20,15 @@ A Laravel-based task management system that allows users to create, update, dele
 
 3. **Environment setup**
    - Copy `.env.example` to `.env`
-   - Configure database connection (MySQL/Postgres/etc.)
+   - Make sure your database is configured
+     ```bash
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=your_db_name
+     DB_USERNAME=your_username
+     DB_PASSWORD=your_password
+     ```
    - Generate app key:
      ```bash
      php artisan key:generate
@@ -87,6 +95,5 @@ php artisan test --filter=TaskTest
 
 - Dashboard includes summary boxes for **total tasks**, **pending tasks**, **completed tasks**, and **high priority tasks**.
 - Future enhancements could include role-based permissions, task assignment, and filtering on dashboard links.
-```
 
 ---
