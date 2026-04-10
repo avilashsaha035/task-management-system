@@ -41,7 +41,7 @@ class TaskController extends Controller
 
         $task->save();
 
-        return redirect()->route('admin.tasks.index')->with('success', 'Task created successfully.');
+        return redirect()->route('admin.tasks.index')->with('success', 'Task created successfully');
     }
 
 
@@ -56,17 +56,29 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $task = Task::findOrFail($id);
+
+        return view('backend.tasks.edit', compact('task'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaskRequest $request, $id)
     {
-        //
+        $task = Task::findOrFail($id);
+
+        $task->title       = $request->title;
+        $task->description = strip_tags($request->description);
+        $task->status      = $request->status;
+        $task->priority    = $request->priority;
+        $task->due_date    = $request->due_date;
+
+        $task->save();
+
+        return redirect()->route('admin.tasks.index')->with('success', 'Task updated successfully');
     }
 
     public function updateStatus(Request $request, $id)
@@ -91,8 +103,11 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return redirect()->route('admin.tasks.index')->with('success', 'Task deleted successfully');
     }
 }

@@ -39,14 +39,14 @@
                         <td class="text-center">{{ $task->title }}</td>
                         <td class="text-center">{{ Str::limit($task->description, 50) }}</td>
                         <td class="text-center">
-                            <select class="form-control form-control-sm task-status" data-id="{{ $task->id }}">
+                            <select class="form-control form-control-sm text-center task-status" data-id="{{ $task->id }}">
                                 <option value="pending" {{ $task->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="in_progress" {{ $task->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="completed" {{ $task->status == 'completed' ? 'selected' : '' }}>Completed</option>
                             </select>
                         </td>
                         <td class="text-center">
-                            <select class="form-control form-control-sm task-priority" data-id="{{ $task->id }}">
+                            <select class="form-control form-control-sm text-center task-priority" data-id="{{ $task->id }}">
                                 <option value="low" {{ $task->priority == 'low' ? 'selected' : '' }}>Low</option>
                                 <option value="medium" {{ $task->priority == 'medium' ? 'selected' : '' }}>Medium</option>
                                 <option value="high" {{ $task->priority == 'high' ? 'selected' : '' }}>High</option>
